@@ -1,7 +1,14 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 
 color = '#ff9b31' // yukarda color i degiskene tanimladim altta sadece color yazip virgul kooydum
 //degiskene atanarakta kullanilabilir
+
+/**
+ * #303e45
+ * #a7b6bd
+ * #4a636e
+ * #ff9b31
+ */
 
 const main = StyleSheet.create({
     container:{
@@ -27,4 +34,33 @@ const main = StyleSheet.create({
     },
 })
 
-export default main;
+const todo_input = StyleSheet.create({
+    inputContainer:{
+        backgroundColor:'#e0e0e0',
+        padding:10,
+        margin:10,
+        borderRadius:10,
+
+    },
+    container:{
+       backgroundColor:'#a7b6bd' ,
+       padding:10,
+       margin:10,
+       borderRadius:5,
+    },
+    buttonContainer:{
+        backgroundColor:'#4a636e',
+        padding:10,
+        margin:10,
+        width:Dimensions.get('window').width / 2.5,
+        alignSelf:'center',
+        borderRadius:8
+    },
+    buttonText:{
+        color: 'white',
+        fontWeight:'bold',
+        textAlign:'center'
+    }
+})
+
+export {main,todo_input};
