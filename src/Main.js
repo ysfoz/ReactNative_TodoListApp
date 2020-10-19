@@ -1,42 +1,69 @@
+import React, { useState } from 'react';
+import { SafeAreaView, Text, View, KeyboardAvoidingView, FlatList } from 'react-native';
 
-import React, {useState} from 'react';
-import { SafeAreaView, Text, View,FlatList,KeyboardAvoidingView } from 'react-native';
-import {main} from './styles'
-
-import {TodoCard,TodoInput} from './components/index'
+import { main } from './styles';
+import { TodoInput, TodoCard } from './components';
 
 const Main = () => {
+    const [list, setList] = useState([])
 
-    const[list,setlist] =useState([])
-    
-    function addTodo(params) {
+    function addTodo(text) {
         const element = {
-            id:list.length,
-            todo: params,
-            isDone:false
+            id: list.length,
+            todo: text,
+            isDone: false
         }
-        const newArray = [...list,element]
-        // newArray.push(element) bu sekilde push etmek yerine spread yontemi ile yazdik
-        
-        setlist(newArray)
-}
-    const renderTodo = ({item}) => <TodoCard data ={item}/>
+        const newArray = [element, ...list]
+        setList(newArray);
+    }
+
+    function doneTodo(todoId) {
+        const newArray = [...list];
+        const todoIndex = newArray.findIndex(item => item.id == todoId);
+
+        newArray[todoIndex].isDone = !newArray[todoIndex].isDone;
+
+        setList(newArray);
+    }
+
+    function removeTodo(todoId) {
+        const newArray = [...list];
+        const todoIndex = list.findIndex(t => t.id == todoId);
+
+        newArray.splice(todoIndex, 1);
+        setList(newArray);
+    }
+
+    const renderTodo = ({ item }) => {
+        return (
+            <TodoCard
+                data={item}
+                onDone={() => doneTodo(item.id)}
+                onRemove={() => removeTodo(item.id)}
+            />
+        )
+    }
+
     return (
         <SafeAreaView style={main.container}>
-            <KeyboardAvoidingView style={main.container} behavior='padding'>
+            <KeyboardAvoidingView style={main.container} behavior="padding">
+
                 <View style={main.banner}>
                     <Text style={main.todoText}>TODO</Text>
-    <Text style={main.todoCount}>{list.length}</Text>
+                    <Text style={main.todoCount}>{list.filter(t => t.isDone === false).length}</Text>
                 </View>
+
                 <FlatList
-                    data = {list}
+                    keyExtractor={(item, index) => index.toString()}
+                    data={list}
                     renderItem={renderTodo}
+                    ListEmptyComponent={() => <Text style={main.emptyComponent}>Nothing to do..</Text>}
                 />
 
-                    <TodoInput
-                    onTodoEnter = {todoText => addTodo(todoText)}
-                    />
-                   
+                <TodoInput
+                    onTodoEnter={todoText => addTodo(todoText)}
+                />
+
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
