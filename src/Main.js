@@ -8,14 +8,15 @@ const Main = () => {
     const [list, setList] = useState([])
 
     function addTodo(text) {
-        const element = {
+        if (text != ''){
+            const element = {
             id: list.length,
             todo: text,
             isDone: false
         }
         const newArray = [element, ...list]
         setList(newArray);
-    }
+    }}
 
     function doneTodo(todoId) {
         const newArray = [...list];
